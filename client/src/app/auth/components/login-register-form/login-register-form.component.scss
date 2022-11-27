@@ -1,0 +1,76 @@
+div.wrapper {
+  border-radius: 8px;
+  box-shadow: 0.5px 0.5px 3px rgba(0, 0, 0, 0.5);
+  width: fit-content;
+  overflow: hidden;
+}
+
+.form {
+  padding: 15px 25px;
+  max-width: 400px;
+  width: fit-content;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__heading {
+  }
+
+  &__fieldset {
+    border-radius: 4px;
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.2);
+    width: fit-content;
+    margin: 15px 10px;
+
+    &:focus-within .form__legend {
+      font-weight: 500;
+    }
+  }
+
+  &__legend {
+    font-size: 14px;
+    background: white;
+    padding: 0 4px;
+  }
+
+  &__input {
+    height: 30px;
+    width: 210px;
+    font-size: 14px;
+    background-color: rgba(110, 0, 110, 0.1);
+    border: none;
+    border-radius: 4px;
+    outline: 1px solid transparent;
+    padding: 3px 8px;
+
+    &:active {
+      outline-width: 1px;
+    }
+  }
+
+  &__button {
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    min-width: 150px;
+    width: fit-content;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 14px;
+    background: rgba(200, 200, 220, 1);
+
+    &:hover {
+      transition: background 0.2s ease;
+      background: rgba(220, 220, 240, 1);
+    }
+
+    &:active {
+      transition: background 0.4s ease;
+      background: rgba(180, 180, 200, 1);
+    }
+  }
+}

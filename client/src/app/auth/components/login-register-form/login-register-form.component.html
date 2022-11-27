@@ -1,0 +1,15 @@
+<div class="wrapper">
+  <form class="form" [formGroup]="form" (submit)="submitUser()">
+    <h3 class="form__heading">Rejestracja</h3>
+    <fieldset class="form__fieldset">
+      <legend class="form__legend">Nazwa użytkownika</legend>
+      <input formControlName="name" class="form__input" type="text" />
+    </fieldset>
+    <fieldset class="form__fieldset">
+      <legend class="form__legend">Hasło</legend>
+      <input formControlName="password" class="form__input" type="password" />
+    </fieldset>
+    <button class="form__button" type="submit">Prześlij</button>
+  </form>
+</div>
+{{ form.value | json }}
