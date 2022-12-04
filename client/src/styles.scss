@@ -1,4 +1,7 @@
-* {
-  box-sizing: border-box !important;
+@import "assets/styles/reset";
+html,
+body {
+  width: 100vw;
+  height: 100vh;
   font-family: "Roboto";
 }

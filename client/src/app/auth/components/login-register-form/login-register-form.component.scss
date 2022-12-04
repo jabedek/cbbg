@@ -6,8 +6,8 @@ div.wrapper {
 }
 
 .form {
-  padding: 15px 25px;
-  max-width: 400px;
+  padding: 25px 35px;
+  min-width: 450px;
   width: fit-content;
   background: white;
   display: flex;
@@ -16,13 +16,16 @@ div.wrapper {
   align-items: center;
 
   &__heading {
+    padding-block: 30px;
+    font-size: 1.6rem;
+    font-weight: 500;
   }
 
   &__fieldset {
     border-radius: 4px;
     border-width: 1px;
     border-color: rgba(0, 0, 0, 0.2);
-    width: fit-content;
+    width: 300px;
     margin: 15px 10px;
 
     &:focus-within .form__legend {
@@ -31,20 +34,21 @@ div.wrapper {
   }
 
   &__legend {
-    font-size: 14px;
+    font-size: 1.05rem;
     background: white;
     padding: 0 4px;
   }
 
   &__input {
-    height: 30px;
-    width: 210px;
-    font-size: 14px;
+    height: 44px;
+    width: 100%;
+    font-size: 1rem;
     background-color: rgba(110, 0, 110, 0.1);
     border: none;
     border-radius: 4px;
     outline: 1px solid transparent;
-    padding: 3px 8px;
+    padding: 12px;
+    margin-block: 8px 10px;
 
     &:active {
       outline-width: 1px;
@@ -52,8 +56,9 @@ div.wrapper {
   }
 
   &__button {
-    height: 40px;
+    height: 44px;
     border-radius: 4px;
+    margin-top: 15px;
     border: 1px solid transparent;
     min-width: 150px;
     width: fit-content;
@@ -62,6 +67,17 @@ div.wrapper {
     font-weight: 500;
     font-size: 14px;
     background: rgba(200, 200, 220, 1);
+    color: rgba(95, 95, 149, 1);
+
+    &[disabled] {
+      background: lightgray;
+      color: darkgray;
+
+      &:hover,
+      &:active {
+        background: lightgray;
+      }
+    }
 
     &:hover {
       transition: background 0.2s ease;
@@ -73,4 +89,23 @@ div.wrapper {
       background: rgba(180, 180, 200, 1);
     }
   }
+
+  &__result {
+    height: 30px;
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
+  }
+}
+
+.hint {
+  font-size: 0.85rem;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.emoji {
+  font-size: 5rem;
+  line-height: 1;
+  text-align: center;
 }

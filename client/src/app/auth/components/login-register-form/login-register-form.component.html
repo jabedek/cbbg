@@ -3,13 +3,27 @@
     <h3 class="form__heading">Rejestracja</h3>
     <fieldset class="form__fieldset">
       <legend class="form__legend">Nazwa użytkownika</legend>
-      <input formControlName="name" class="form__input" type="text" />
+      <input formControlName="username" class="form__input" type="text" />
+      <p class="hint">4-10 dowolnych liter.</p>
     </fieldset>
     <fieldset class="form__fieldset">
       <legend class="form__legend">Hasło</legend>
       <input formControlName="password" class="form__input" type="password" />
+      <p class="hint">
+        4-10 dowolnych znaków. <br />Ty odpowiadasz za swoje bezpieczeństwo.
+      </p>
+      <div class="emoji">🤸🏻</div>
     </fieldset>
-    <button class="form__button" type="submit">Prześlij</button>
+    <button class="form__button" type="submit" [disabled]="form.invalid">
+      Prześlij
+    </button>
+    <div class="form__result">
+      <ng-container *ngIf="registrationResult === 'success'">
+        🍀 Rejestracja powiodła się. Możesz się zalogować.
+      </ng-container>
+      <ng-container *ngIf="registrationResult === 'failure'">
+        🍄 Wystąpił błąd. Spróbuj ponownie.
+      </ng-container>
+    </div>
   </form>
 </div>
-{{ form.value | json }}
