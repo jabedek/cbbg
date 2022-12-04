@@ -6,6 +6,7 @@ import { secret } from "../config/auth.config";
 import bcrypt from "bcryptjs";
 import { Model } from "mongoose";
 import logger from "node-color-log";
+import { BackendMessage } from "../../../system-shared/models/backend-message";
 
 const User: Model<NewUser> | undefined = db.user;
 
@@ -19,32 +20,31 @@ const signup = (req: Request, res: Response) => {
   });
 
   user.save((err: any, user: any) => {
+    const result: BackendMessage = { status: "", message: "" };
     if (err) {
-      res.status(500).send({ message: err });
+      result.status = "failure";
+      result.message = err;
+      res.status(500).send({ ...result });
       return;
     } else {
-      const message = "User created";
-      res.status(200).json({ message });
-      logger.info(message);
+      result.status = "success";
+      res.status(200).json({ ...result });
+      logger.info(result);
     }
   });
 };
 
 const signin = (req: Request, res: Response) => {
-  console.log(req.body);
-
   User.findOne({
     username: req.body.username,
   }).exec((err: any, user: any) => {
-    console.log("user", user);
-
     if (err) {
       res.status(500).send({ message: err });
       return;
     }
 
     if (!user) {
-      return res.status(404).send({ message: "User Not found." });
+      return res.status(404).send({ message: "Nie znaleziono użytkownika." });
     }
 
     const passwordIsValid = bcrypt.compareSync(
@@ -55,7 +55,7 @@ const signin = (req: Request, res: Response) => {
     if (!passwordIsValid) {
       return res.status(401).send({
         accessToken: null,
-        message: "Invalid Password!",
+        message: "Niepoprawne hasło.",
       });
     }
 

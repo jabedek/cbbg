@@ -4,8 +4,6 @@ import { authController } from "../controllers/auth.controller";
 
 export function authRoutes(app: Application) {
   app.use(function (req: Request, res: Response, next: NextFunction) {
-    console.log("dupa");
-
     res.header(
       "Access-Control-Allow-Headers",
       "x-access-token, Origin, Content-Type, Accept"
