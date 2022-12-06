@@ -1,4 +1,9 @@
+export type UserHash = `user:${string}`;
+export type RoomHash = `room:${string}-${number}-${string}`;
+
 export interface RoomOpen {
-  socketUserId: `user:${string}`;
-  roomId: `room:${string}`;
+  roomId: RoomHash;
+  createdByUserId: string;
+  name: string;
 }
+export type RoomData = RoomOpen & { connectedSockets: any[] };

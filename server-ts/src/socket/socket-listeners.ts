@@ -6,12 +6,15 @@ import {
 } from "../../../system-shared/models/io-events.model";
 import {
   SE_Basic,
-  SE_Direction,
-  SE_SubjectAction,
+  SE_Source,
+  SE_Message,
   SocketEvent,
 } from "../../../system-shared/models/socket-events.model";
 import { RoomOpen } from "../../../system-shared/models/specific-events.model";
-import { UserData } from "../../../system-shared/models/user.model";
+import {
+  UserData,
+  UserSocketSessionData,
+} from "../../../system-shared/models/user.model";
 import { emitRoomsUpdate } from "./socket-helpers";
 
 /** Listen to io engine events provided by library */
@@ -49,22 +52,19 @@ export function listenToRoomBasicEvents(ioInstance: Server): void {
 export function listenToRoomCustomEvents(
   socket: Socket,
   ioInstance: Server,
-  usersData: Map<string, UserData>
+  usersData: Map<string, UserSocketSessionData>
 ): void {
   console.log("listenToRoomCustomEvents");
 
   socket.on(
-    `${SE_Direction.FROM_CLIENT}#${SE_SubjectAction.user_create_room}`,
+    `${SE_Source.CLIENT}#${SE_Message.user_create_room}`,
     async (event: SocketEvent<RoomOpen>) => {
-      console.log(event);
-
-      const { roomId, socketUserId } = event.payload;
+      const { roomId, createdByUserId } = event.payload;
       socket.join(roomId);
 
-      const user = usersData.get(socketUserId);
-
+      const user = usersData.get(createdByUserId);
       if (user) {
-        user.createdRooms.push(roomId);
+        user?.createdRooms?.push(roomId);
       }
 
       emitRoomsUpdate(ioInstance);

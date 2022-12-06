@@ -1,26 +1,10 @@
-import { Component, OnDestroy } from '@angular/core';
-
-import { SocketioService } from './socketio.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent {
   title = 'cbbg';
-  constructor(public socketService: SocketioService) {}
-
-  ngOnInit() {
-    this.socketService.setupSocketClient();
-  }
-
-  ngOnDestroy() {
-    this.socketService.disconnectAll();
-    console.log('destroy');
-  }
-
-  newRoom() {
-    this.socketService.createRoom();
-  }
 }

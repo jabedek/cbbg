@@ -1,12 +1,16 @@
 import { Request, Response } from "express";
-import { db } from "../mongodb/models/models.index";
 import { sign } from "jsonwebtoken";
-import { NewUser } from "../mongodb/models/user.model";
 import { secret } from "../config/auth.config";
 import bcrypt from "bcryptjs";
 import { Model } from "mongoose";
 import logger from "node-color-log";
-import { BackendMessage } from "../../../system-shared/models/backend-message";
+import {
+  UserData,
+  UserDataWithToken,
+} from "../../../../system-shared/models/user.model";
+import { db } from "../../mongodb/models/models.index";
+import { NewUser } from "../../mongodb/models/user.model";
+import { BackendMessage } from "../../../../system-shared/models/backend-message";
 
 const User: Model<NewUser> | undefined = db.user;
 
@@ -16,7 +20,7 @@ const signup = (req: Request, res: Response) => {
     password: bcrypt.hashSync((req?.body as any)?.password, 8),
     gainedPoints: req.body?.gainedPoints || 0,
     joinedAt: Date.now(),
-    currentConnection: { userSocketId: "", atRoom: "" },
+    currentConnection: { userId: "", atRoom: "" },
   });
 
   user.save((err: any, user: any) => {
@@ -37,15 +41,17 @@ const signup = (req: Request, res: Response) => {
 const signin = (req: Request, res: Response) => {
   User.findOne({
     username: req.body.username,
-  }).exec((err: any, user: any) => {
+  }).exec((err: any, data: unknown) => {
     if (err) {
       res.status(500).send({ message: err });
       return;
     }
 
-    if (!user) {
+    if (!data) {
       return res.status(404).send({ message: "Nie znaleziono użytkownika." });
     }
+
+    const user = data as UserData;
 
     const passwordIsValid = bcrypt.compareSync(
       req.body.password,
@@ -60,15 +66,22 @@ const signin = (req: Request, res: Response) => {
     }
 
     if (!err && user && passwordIsValid) {
-      const token = sign({ id: user.id }, secret, {
+      const token = sign({ id: user._id }, secret, {
         expiresIn: 86400, // 24 hours
       });
 
-      res.status(200).send({
-        id: user._id,
+      // console.log(user);
+
+      const authUser: UserDataWithToken = {
+        _id: user._id,
         username: user.username,
         accessToken: token,
-      });
+        gainedPoints: user.gainedPoints,
+        joinedAt: user.joinedAt,
+        userId: user.userId,
+      };
+
+      res.status(200).send(authUser);
     }
   });
 };

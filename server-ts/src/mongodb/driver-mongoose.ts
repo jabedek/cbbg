@@ -1,10 +1,13 @@
+require("dotenv").config();
 import { db } from "./models/models.index";
 
-const uri = `mongodb+srv://jabedek:6HPObdDeK0zOyM2C@cbbg-cluster.re9mwpk.mongodb.net/cbbg-main?retryWrites=true&w=majority`;
+const MONGO_USER = process.env.MONGO_USER;
+const MONGO_PWD = process.env.MONGO_PWD;
+const MONGO_DB = process.env.MONGO_DB;
 
-const User = db.user;
+const uri = `mongodb+srv://${MONGO_USER}:${MONGO_PWD}@cbbg-cluster.re9mwpk.mongodb.net/${MONGO_DB}?retryWrites=true&w=majority`;
 
-export async function mongoConnection2() {
+export async function initMongoConnection() {
   return db?.mongoose
     ?.connect(uri)
     .then(() => {

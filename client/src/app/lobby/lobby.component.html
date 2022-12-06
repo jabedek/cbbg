@@ -1,0 +1,72 @@
+<div tabindex="1" class="wrapper">
+  <div class="mode">
+    <div>
+      <button class="mode__button">Akcja1</button>
+      <button class="mode__button">Akcja2</button>
+    </div>
+  </div>
+  <div class="card">
+    <h3 class="card__heading">Lobby</h3>
+    <!-- <div>
+
+      <input
+      #usernameInput
+      formControlName="username"
+      class="card__input"
+      type="text"
+      minlength="4"
+      maxlength="10"
+      />
+      <button class="card__button" type="submit" [disabled]="false">
+        Akcja3
+      </button>
+    </div> -->
+    <div class="rooms">
+      <ul class="rooms__list">
+        <li *ngFor="let room of rooms">
+          <div>{{ room.name }}</div>
+        </li>
+      </ul>
+
+      <button class="rooms__button" type="submit" [disabled]="false">
+        Dołącz do pokoju
+      </button>
+    </div>
+    <div class="create">
+      <!-- <button>Znajdź grę</button>
+      <button>Gracze online</button> -->
+      <!-- <div> -->
+      <div class="notch">
+        <div class="side side--left"></div>
+        <div class="heading">Tworzenie pokoju</div>
+        <div class="side side--right"></div>
+      </div>
+      <fieldset class="create__fieldset">
+        <legend class="create__legend">Nazwa pokoju</legend>
+        <input
+          #roomName
+          class="create__input"
+          type="text"
+          minlength="4"
+          maxlength="10"
+        />
+      </fieldset>
+      <button
+        class="create__button"
+        type="submit"
+        [disabled]="false"
+        (click)="create.emit(roomName.value)"
+      >
+        Załóż pokój
+      </button>
+    </div>
+    <!-- </div> -->
+    <!-- <div class="chat">
+      <div class="messages"></div>
+      <div class="chat__wrapper">
+        <textarea [placeholder]="'Napisz coś'"></textarea>
+      </div>
+      <button class="chat__send">Wyślij</button>
+    </div> -->
+  </div>
+</div>

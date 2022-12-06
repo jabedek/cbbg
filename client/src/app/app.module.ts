@@ -9,6 +9,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { SharedModule } from './shared/shared.module';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { StoreModule } from '@ngrx/store';
+import { userReducer } from './state/user/user.reducer';
+import { LayoutModule } from './layout/layout.module';
+import { LobbyModule } from './lobby/lobby.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,11 +25,17 @@ import { SharedModule } from './shared/shared.module';
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    AuthModule,
-    SharedModule,
     RouterModule.forRoot([
       // routes
     ]),
+    AuthModule,
+    LayoutModule,
+    SharedModule,
+    StoreModule.forRoot({ user: userReducer }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

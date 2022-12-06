@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { BackendMessage } from "../../../system-shared/models/backend-message";
-import { db } from "../mongodb/models/models.index";
+import { BackendMessage } from "../../../../system-shared/models/backend-message";
+import { db } from "../../mongodb/models/models.index";
 
 const User = db.user;
 

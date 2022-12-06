@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainLayoutComponent } from '../layout/main-layout/main-layout.component';
-import { AccountComponent } from './account/account.component';
+import { UserComponent } from './user.component';
 
 const routes: Routes = [
   {
@@ -9,9 +9,10 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        // component: MainLayoutComponent,
+        component: MainLayoutComponent,
+
         children: [
-          { path: '', pathMatch: 'full', component: AccountComponent },
+          { path: '', pathMatch: 'full', component: UserComponent },
           // { path: 'details/:id', component: UserComponent },
           // { path: 'add', component: UserComponent },
         ],
@@ -24,4 +25,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AccountRoutingModule {}
+export class UserRoutingModule {}

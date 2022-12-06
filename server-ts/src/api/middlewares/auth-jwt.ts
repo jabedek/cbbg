@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { JwtPayload, sign, verify, VerifyErrors } from "jsonwebtoken";
 import { secret } from "../config/auth.config";
-import { db } from "../mongodb/models/models.index";
+import { db } from "../../mongodb/models/models.index";
 
 export type TokenPayload = { user: string; password: string };
 export type DecodedJwtPayload = TokenPayload & Pick<JwtPayload, "iat" | "exp">;

@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
+import { AuthGuard } from './auth/auth.guard';
+import { LoginRegisterFormComponent } from './auth/components/login-register-form/login-register-form.component';
+import { WrongPageComponent } from './auth/components/wrong-page/wrong-page.component';
 const routes: Routes = [
   {
     path: '',
@@ -8,7 +10,11 @@ const routes: Routes = [
       {
         path: '',
         children: [
-          // { path: '', pathMatch: 'full', component: HomePage },
+          {
+            path: '',
+            pathMatch: 'full',
+            component: LoginRegisterFormComponent,
+          },
           // { path: 'details/:id', component: UserComponent },
           // { path: 'add', component: UserComponent },
         ],
@@ -16,10 +22,13 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'account',
-    // canActivate: [AuthGuard],
-    loadChildren: () =>
-      import('./account/account.module').then((m) => m.AccountModule),
+    path: 'user',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
+  },
+  {
+    path: '**',
+    component: WrongPageComponent,
   },
 ];
 

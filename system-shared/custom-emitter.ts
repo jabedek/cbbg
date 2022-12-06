@@ -1,25 +1,25 @@
 import {
-  SE_Direction,
-  SE_SubjectAction,
+  SE_Source,
+  SE_Message,
   SocketEvent,
 } from "./models/socket-events.model";
 import { Socket as ServerSocket } from "../server-ts/node_modules/socket.io";
 import { Socket as ClientSocket } from "../client/node_modules/socket.io-client";
 
-export class CustomEmitter {
-  source: SE_Direction;
-  constructor(source: SE_Direction) {
-    this.source = source;
+export class CustomSocketEmitter {
+  readonly direction: SE_Source;
+  constructor(direction: SE_Source) {
+    this.direction = direction;
   }
 
   emit<T = void>(
     socket: ServerSocket | ClientSocket,
-    subjectAction: SE_SubjectAction,
+    message: SE_Message,
     payload: T
   ) {
     socket.emit(
-      `${this.source}#${subjectAction}`,
-      new SocketEvent<T>(this.source, subjectAction, Date.now(), payload)
+      `${this.direction}#${message}`,
+      new SocketEvent<T>(this.direction, message, Date.now(), payload)
     );
   }
 }

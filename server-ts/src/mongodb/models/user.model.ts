@@ -10,15 +10,9 @@ export const UserModel = mongoose.model(
     password: String,
     gainedPoints: Number,
     joinedAt: String,
-    currentConnection: {
-      userSocketId: {
-        type: String,
-        value: undefined,
-      },
-      atRoom: {
-        type: Object,
-        value: undefined,
-      },
+    userId: {
+      type: String,
+      default: undefined,
     },
   })
 );

@@ -1,0 +1,4 @@
+<app-lobby
+  [rooms]="(rooms$ | async) || []"
+  (create)="createRoom($event)"
+></app-lobby>
