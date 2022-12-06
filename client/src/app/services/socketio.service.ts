@@ -22,7 +22,7 @@ import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 })
 export class SocketioService implements OnDestroy {
   private destroy = new Subject<void>();
-  private static createdRooms = 0;
+  private static createdGames = 0;
   userId: string | undefined;
   private socket: Socket | undefined;
   private emitter = new CustomSocketEmitter(SE_Source.CLIENT);
@@ -59,9 +59,9 @@ export class SocketioService implements OnDestroy {
 
   createRoom(name: string) {
     if (this.socket) {
-      this.emitter.emit<RoomOpen>(this.socket, SE_Message.user_create_room, {
+      this.emitter.emit<RoomOpen>(this.socket, SE_Message.user_create_game, {
         createdByUserId: `user:${this.userId}`,
-        roomId: `room:${this.userId}-${SocketioService.createdRooms++}-${name}`,
+        roomId: `room:${this.userId}-${SocketioService.createdGames++}-${name}`,
         name,
       });
     }
@@ -77,6 +77,8 @@ export class SocketioService implements OnDestroy {
     );
 
     socket.on(SE_Basic.disconnect, () => {
+      console.log('callback');
+
       this.socket?.removeAllListeners();
     });
   }

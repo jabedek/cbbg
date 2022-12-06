@@ -37,7 +37,7 @@ export function setupSocketServer(http: any, origin: string[]): void {
 
 function coupleSocketListenersToUser(socket: Socket, ioInstance: Server) {
   const socketUserData: UserSocketSessionData = {
-    createdRooms: [],
+    createdGames: [],
     userId: socket.handshake.query.userId as unknown as string,
     currentSocket: socket,
     atRoom: undefined,
@@ -62,6 +62,7 @@ function coupleSocketListenersToUser(socket: Socket, ioInstance: Server) {
 
       setUserSocket.on(SE_Basic.disconnect, () => {
         usersData.get(userId)?.currentSocket?.removeAllListeners().disconnect();
+        usersData.delete(userId);
 
         logger
           .dim()

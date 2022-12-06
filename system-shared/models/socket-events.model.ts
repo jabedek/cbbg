@@ -15,7 +15,7 @@ export enum SE_Basic {
 }
 
 export enum SE_Message {
-  user_create_room = "user_create_room",
+  user_create_game = "user_create_game",
   user_joined_room = "user_joined_room",
   game_started = "game_started",
   game_finished = "game_finished",

@@ -24,6 +24,6 @@ export type UserDataWithToken = Omit<UserData, "password"> & {
 export interface UserSocketSessionData {
   userId?: string;
   currentSocket?: ServerSocket | ClientSocket;
-  createdRooms?: RoomHash[];
+  createdGames?: RoomHash[];
   atRoom?: ServerSocket | ClientSocket | undefined;
 }

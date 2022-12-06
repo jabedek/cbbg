@@ -57,14 +57,16 @@ export function listenToRoomCustomEvents(
   console.log("listenToRoomCustomEvents");
 
   socket.on(
-    `${SE_Source.CLIENT}#${SE_Message.user_create_room}`,
+    `${SE_Source.CLIENT}#${SE_Message.user_create_game}`,
     async (event: SocketEvent<RoomOpen>) => {
+      console.log(">>", event);
+
       const { roomId, createdByUserId } = event.payload;
       socket.join(roomId);
 
       const user = usersData.get(createdByUserId);
       if (user) {
-        user?.createdRooms?.push(roomId);
+        user?.createdGames?.push(roomId);
       }
 
       emitRoomsUpdate(ioInstance);
