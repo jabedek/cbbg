@@ -4,10 +4,7 @@ import { secret } from "../config/auth.config";
 import bcrypt from "bcryptjs";
 import { Model } from "mongoose";
 import logger from "node-color-log";
-import {
-  UserData,
-  UserDataWithToken,
-} from "../../../../system-shared/models/user.model";
+import { UserData } from "../../../../system-shared/models/user.model";
 import { db } from "../../mongodb/models/models.index";
 import { NewUser } from "../../mongodb/models/user.model";
 import { BackendMessage } from "../../../../system-shared/models/backend-message";
@@ -21,6 +18,7 @@ const signup = (req: Request, res: Response) => {
     gainedPoints: req.body?.gainedPoints || 0,
     joinedAt: Date.now(),
     currentConnection: { userId: "", atRoom: "" },
+    accessToken: undefined,
   });
 
   user.save((err: any, user: any) => {
@@ -53,35 +51,83 @@ const signin = (req: Request, res: Response) => {
 
     const user = data as UserData;
 
-    const passwordIsValid = bcrypt.compareSync(
-      req.body.password,
-      user.password
-    );
+    if (user && user.password) {
+      const passwordIsValid = bcrypt.compareSync(
+        req.body.password,
+        user.password
+      );
 
-    if (!passwordIsValid) {
-      return res.status(401).send({
-        accessToken: null,
-        message: "Niepoprawne hasło.",
-      });
+      if (!passwordIsValid) {
+        return res.status(401).send({
+          accessToken: undefined,
+          message: "Niepoprawne hasło.",
+        });
+      }
+
+      if (!err && passwordIsValid) {
+        const token = sign({ id: user._id }, secret, {
+          expiresIn: 86400, // 24 hours
+        });
+
+        const authUser: UserData = {
+          _id: user._id,
+          username: user.username,
+          accessToken: token,
+          gainedPoints: user.gainedPoints,
+          joinedAt: user.joinedAt,
+          userId: user.userId,
+        };
+
+        User.findByIdAndUpdate(
+          `${user._id}`,
+          { accessToken: token },
+          (err: any, data: unknown) => {
+            if (err) {
+              res.status(500).send({ message: err });
+              return;
+            }
+            if (!data) {
+              return res
+                .status(404)
+                .send({ message: "Nie znaleziono użytkownika." });
+            }
+            if (!err) {
+              res.status(200).send(authUser);
+            }
+          }
+        );
+      }
     }
+  });
+};
 
-    if (!err && user && passwordIsValid) {
-      const token = sign({ id: user._id }, secret, {
-        expiresIn: 86400, // 24 hours
-      });
+const signout = (req: Request, res: Response) => {
+  User.findOne({
+    _id: req.body._id,
+  }).exec((err: any, data: unknown) => {
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
+    if (!data) {
+      return res.status(404).send({ message: "Nie znaleziono użytkownika." });
+    }
+    const user = data as UserData;
+    if (user) {
+      User.findByIdAndUpdate(
+        user._id,
+        { accessToken: "" },
+        (err: any, freshData: unknown) => {
+          console.log(freshData);
 
-      // console.log(user);
-
-      const authUser: UserDataWithToken = {
-        _id: user._id,
-        username: user.username,
-        accessToken: token,
-        gainedPoints: user.gainedPoints,
-        joinedAt: user.joinedAt,
-        userId: user.userId,
-      };
-
-      res.status(200).send(authUser);
+          if (err) {
+            res.status(500).send({ message: err });
+            return;
+          } else {
+            res.status(200).send(freshData);
+          }
+        }
+      );
     }
   });
 };
@@ -89,4 +135,5 @@ const signin = (req: Request, res: Response) => {
 export const authController = {
   signup,
   signin,
+  signout,
 };

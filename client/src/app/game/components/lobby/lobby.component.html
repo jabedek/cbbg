@@ -21,14 +21,14 @@
         Akcja3
       </button>
     </div> -->
-    <div class="rooms">
-      <ul class="rooms__list">
-        <li *ngFor="let room of rooms">
-          <div>{{ room.name }}</div>
+    <div class="games">
+      <ul class="games__list">
+        <li *ngFor="let game of games$ | async">
+          <div>{{ game.name }}</div>
         </li>
       </ul>
 
-      <button class="rooms__button" type="submit" [disabled]="false">
+      <button class="games__button" type="submit" [disabled]="false">
         Dołącz do pokoju
       </button>
     </div>
@@ -44,7 +44,7 @@
       <fieldset class="create__fieldset">
         <legend class="create__legend">Nazwa pokoju</legend>
         <input
-          #roomName
+          #gameName
           class="create__input"
           type="text"
           minlength="4"
@@ -55,7 +55,7 @@
         class="create__button"
         type="submit"
         [disabled]="false"
-        (click)="create.emit(roomName.value)"
+        (click)="create.emit(gameName.value)"
       >
         Załóż pokój
       </button>

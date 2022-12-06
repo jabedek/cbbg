@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { RouterModule } from '@angular/router';
+import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
 
 @NgModule({
-  declarations: [MainLayoutComponent],
+  declarations: [AuthLayoutComponent],
   imports: [CommonModule, RouterModule.forChild([])],
-  exports: [MainLayoutComponent],
+  exports: [AuthLayoutComponent],
 })
 export class LayoutModule {}

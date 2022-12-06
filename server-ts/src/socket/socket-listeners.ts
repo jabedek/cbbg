@@ -10,12 +10,12 @@ import {
   SE_Message,
   SocketEvent,
 } from "../../../system-shared/models/socket-events.model";
-import { RoomOpen } from "../../../system-shared/models/specific-events.model";
+import { Game } from "../../../system-shared/models/specific-events.model";
 import {
   UserData,
   UserSocketSessionData,
 } from "../../../system-shared/models/user.model";
-import { emitRoomsUpdate } from "./socket-helpers";
+import { sendActiveGames } from "./socket-helpers";
 
 /** Listen to io engine events provided by library */
 export function listenToIOEngineEvents(ioInstance: Server): void {
@@ -48,28 +48,32 @@ export function listenToRoomBasicEvents(ioInstance: Server): void {
   });
 }
 
-/** Listen to custom room events */
-export function listenToRoomCustomEvents(
+export function listenToCreateGame(
   socket: Socket,
   ioInstance: Server,
   usersData: Map<string, UserSocketSessionData>
 ): void {
-  console.log("listenToRoomCustomEvents");
+  console.log("listenToCreateGame");
 
   socket.on(
     `${SE_Source.CLIENT}#${SE_Message.user_create_game}`,
-    async (event: SocketEvent<RoomOpen>) => {
+    async (event: SocketEvent<Game>) => {
       console.log(">>", event);
 
-      const { roomId, createdByUserId } = event.payload;
-      socket.join(roomId);
+      const { gameId, createdByUserId, name, connectedSockets } = event.payload;
+      socket.join(gameId);
 
       const user = usersData.get(createdByUserId);
       if (user) {
-        user?.createdGames?.push(roomId);
+        user?.createdGames?.push(gameId);
       }
 
-      emitRoomsUpdate(ioInstance);
+      ioInstance.emit(
+        `${SE_Source.SERVER}#${SE_Message.user_create_game_response}`,
+        "created"
+      );
+
+      sendActiveGames(ioInstance);
     }
   );
 }

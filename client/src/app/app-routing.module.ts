@@ -21,10 +21,11 @@ const routes: Routes = [
       },
     ],
   },
+
   {
-    path: 'user',
+    path: 'game',
     canActivate: [AuthGuard],
-    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
+    loadChildren: () => import('./game/game.module').then((m) => m.GameModule),
   },
   {
     path: '**',

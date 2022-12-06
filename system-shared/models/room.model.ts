@@ -1,1 +1,1 @@
-import { RoomOpen } from "./specific-events.model";
+import { Game } from "./specific-events.model";

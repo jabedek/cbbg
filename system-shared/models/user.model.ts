@@ -11,15 +11,12 @@ export interface JoinedSocket {
 export interface UserData {
   _id: ObjectId;
   username: string;
-  password: string;
+  password?: string;
   gainedPoints: number;
   joinedAt: string | number; // timestamp
   userId?: string;
+  accessToken?: string;
 }
-
-export type UserDataWithToken = Omit<UserData, "password"> & {
-  accessToken: string;
-};
 
 export interface UserSocketSessionData {
   userId?: string;

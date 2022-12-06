@@ -3,26 +3,32 @@ import {
   SE_Source,
   SE_Message,
 } from "../../../system-shared/models/socket-events.model";
-import { RoomData } from "../../../system-shared/models/specific-events.model";
+import { Game } from "../../../system-shared/models/specific-events.model";
 
-export function emitRoomsUpdate(ioInstance: Server): void {
-  const rooms: RoomData[] = [...ioInstance.of("/").adapter.rooms]
-    .filter((room) => room[0].includes("room"))
+export function sendActiveGames(
+  ioInstance: Server,
+  message?: SE_Message
+): void {
+  const rooms: Game[] = [...ioInstance.of("/").adapter.rooms]
+    .filter((room) => room[0].includes("game"))
     .map((room) => {
       const connectedSockets: any[] = [];
       room[1].forEach((e) => connectedSockets.push(e));
 
-      const [createdByUserId, _, name] = room[0]
-        .replace("room:", "")
+      const [createdByUserId, _, name, nameHash] = room[0]
+        .replace("game:", "")
         .split("-");
 
       return {
-        roomId: room[0],
+        gameId: room[0],
         createdByUserId,
-        name,
+        name: `${name}-${nameHash}`,
         connectedSockets,
-      } as unknown as RoomData;
+      } as unknown as Game;
     });
 
-  ioInstance.emit(`${SE_Source.SERVER}#${SE_Message.update_rooms}`, rooms);
+  ioInstance.emit(
+    `${SE_Source.SERVER}#${message || SE_Message.send_active_games}`,
+    rooms
+  );
 }

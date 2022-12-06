@@ -7,29 +7,25 @@ import {
   SE_Message,
 } from '../../../../system-shared/models/socket-events.model';
 import { CustomSocketEmitter } from '../../../../system-shared/custom-emitter';
-import {
-  RoomData,
-  RoomHash,
-  RoomOpen,
-} from '../../../../system-shared/models/specific-events.model';
+import { Game } from '../../../../system-shared/models/specific-events.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../state/app-state';
 import { selectUserId } from '../state/user/user.selectors';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SocketioService implements OnDestroy {
   private destroy = new Subject<void>();
-  private static createdGames = 0;
   userId: string | undefined;
   private socket: Socket | undefined;
   private emitter = new CustomSocketEmitter(SE_Source.CLIENT);
 
-  rooms$ = new BehaviorSubject<RoomData[]>([]);
+  games$ = new BehaviorSubject<Game[]>([]);
 
-  constructor(private store: Store<AppState>) {
+  constructor(private store: Store<AppState>, private router: Router) {
     this.store
       .select(selectUserId)
       .pipe(takeUntil(this.destroy))
@@ -58,21 +54,35 @@ export class SocketioService implements OnDestroy {
   }
 
   createRoom(name: string) {
+    const nameRandom = `${name}-${Math.randomInt(1000, 9999)}`;
+    const game: Game = {
+      createdByUserId: `user:${this.userId}`,
+      gameId: `game:${this.userId}-${nameRandom}`,
+      name: nameRandom,
+      connectedSockets: [],
+    };
+    console.log(game);
+
     if (this.socket) {
-      this.emitter.emit<RoomOpen>(this.socket, SE_Message.user_create_game, {
-        createdByUserId: `user:${this.userId}`,
-        roomId: `room:${this.userId}-${SocketioService.createdGames++}-${name}`,
-        name,
-      });
+      this.emitter.emit<Game>(this.socket, SE_Message.user_create_game, game);
+
+      this.socket.on(
+        `${SE_Source.SERVER}#${SE_Message.user_create_game_response}`,
+        (result: string) => {
+          if (result === 'created') {
+            this.router.navigate([`/play/game`, game.gameId], { state: game });
+          }
+        }
+      );
     }
   }
 
   private listenToSocketEvents(socket: Socket) {
     socket.on(
-      `${SE_Source.SERVER}#${SE_Message.update_rooms}`,
-      (rooms: RoomData[]) => {
-        console.log(rooms);
-        this.rooms$.next(rooms);
+      `${SE_Source.SERVER}#${SE_Message.send_active_games}`,
+      (games: Game[]) => {
+        console.log(games);
+        this.games$.next(games);
       }
     );
 

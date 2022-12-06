@@ -1,7 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import { UserDataWithToken } from '../../../../../system-shared/models/user.model';
+import { UserData } from '../../../../../system-shared/models/user.model';
 
 export const login = createAction(
   '[Auth] User Login',
-  props<{ data: UserDataWithToken }>()
+  props<{ data: UserData }>()
 );
+
+export const logout = createAction('[Auth] User Logout');

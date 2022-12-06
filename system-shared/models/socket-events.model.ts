@@ -16,26 +16,27 @@ export enum SE_Basic {
 
 export enum SE_Message {
   user_create_game = "user_create_game",
-  user_joined_room = "user_joined_room",
-  game_started = "game_started",
-  game_finished = "game_finished",
-  game_paused = "game_paused",
-  general_client_connected = "general_client_connected",
-  update_rooms = "update_rooms",
+  user_create_game_response = "user_create_game_response",
+  user_joined_game = "user_joined_game",
+  send_active_games = "send_active_games",
+  // game_started = "game_started",
+  // game_finished = "game_finished",
+  // game_paused = "game_paused",
+  // general_client_connected = "general_client_connected",
 }
 
 export class SocketEvent<T> {
-  direction: SE_Source;
+  source: SE_Source;
   message: SE_Message;
   timestamp: number;
   payload: T;
   constructor(
-    direction: SE_Source,
+    source: SE_Source,
     message: SE_Message,
     timestamp: number,
     payload: T
   ) {
-    this.direction = direction;
+    this.source = source;
     this.message = message;
     this.timestamp = timestamp;
     this.payload = payload;

@@ -8,7 +8,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        // component: MainLayoutComponent,
+        // component: AuthLayoutComponent,
         children: [
           {
             path: '',

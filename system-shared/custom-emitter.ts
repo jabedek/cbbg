@@ -7,9 +7,9 @@ import { Socket as ServerSocket } from "../server-ts/node_modules/socket.io";
 import { Socket as ClientSocket } from "../client/node_modules/socket.io-client";
 
 export class CustomSocketEmitter {
-  readonly direction: SE_Source;
-  constructor(direction: SE_Source) {
-    this.direction = direction;
+  readonly source: SE_Source;
+  constructor(source: SE_Source) {
+    this.source = source;
   }
 
   emit<T = void>(
@@ -18,8 +18,8 @@ export class CustomSocketEmitter {
     payload: T
   ) {
     socket.emit(
-      `${this.direction}#${message}`,
-      new SocketEvent<T>(this.direction, message, Date.now(), payload)
+      `${this.source}#${message}`,
+      new SocketEvent<T>(this.source, message, Date.now(), payload)
     );
   }
 }

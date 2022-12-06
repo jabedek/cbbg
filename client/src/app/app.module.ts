@@ -14,7 +14,7 @@ import { environment } from '../environments/environment';
 import { StoreModule } from '@ngrx/store';
 import { userReducer } from './state/user/user.reducer';
 import { LayoutModule } from './layout/layout.module';
-import { LobbyModule } from './lobby/lobby.module';
+import { GameModule } from './game/game.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +31,7 @@ import { LobbyModule } from './lobby/lobby.module';
     AuthModule,
     LayoutModule,
     SharedModule,
+    GameModule,
     StoreModule.forRoot({ user: userReducer }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,

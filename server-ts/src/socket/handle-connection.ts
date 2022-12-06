@@ -11,11 +11,11 @@ import {
   UserSocketSessionData,
 } from "../../../system-shared/models/user.model";
 import { CustomSocketEmitter } from "../../../system-shared/custom-emitter";
-import { emitRoomsUpdate } from "./socket-helpers";
+import { sendActiveGames } from "./socket-helpers";
 import {
   listenToIOEngineEvents,
   listenToRoomBasicEvents,
-  listenToRoomCustomEvents,
+  listenToCreateGame,
 } from "./socket-listeners";
 import { IdGenerator } from "../../../system-shared/helpers/id-gen";
 
@@ -57,7 +57,7 @@ function coupleSocketListenersToUser(socket: Socket, ioInstance: Server) {
 
     if (setUser && setUserSocket) {
       listenToRoomBasicEvents(ioInstance);
-      listenToRoomCustomEvents(setUserSocket, ioInstance, usersData);
+      listenToCreateGame(setUserSocket, ioInstance, usersData);
       const emitter = new CustomSocketEmitter(SE_Source.SERVER);
 
       setUserSocket.on(SE_Basic.disconnect, () => {
@@ -72,7 +72,8 @@ function coupleSocketListenersToUser(socket: Socket, ioInstance: Server) {
       });
     }
   }
-  emitRoomsUpdate(ioInstance);
+  sendActiveGames(ioInstance);
+  console.log(ioInstance.of("/").adapter.rooms);
 
   logger.info(
     `Client socket [${socket.id}] has connected for user with id [${userId}].`,

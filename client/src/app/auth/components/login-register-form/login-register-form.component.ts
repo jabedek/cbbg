@@ -3,21 +3,16 @@ import {
   Component,
   ElementRef,
   HostListener,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { fromEvent, tap } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
-import { AppState } from 'src/app/state/app-state';
-import { login } from 'src/app/state/user/user.actions';
+import { AuthService } from 'src/app/auth/auth.service';
 import {
   BackendError,
   BackendMessage,
 } from '../../../../../../system-shared/models/backend-message';
-import { UserDataWithToken } from '../../../../../../system-shared/models/user.model';
+import { UserData } from '../../../../../../system-shared/models/user.model';
 
 @Component({
   selector: 'app-login-register-form',
@@ -48,8 +43,7 @@ export class LoginRegisterFormComponent implements AfterViewInit {
   constructor(
     public fb: FormBuilder,
     private auth: AuthService,
-    private router: Router,
-    private store: Store<AppState>
+    private router: Router
   ) {}
 
   ngAfterViewInit(): void {
@@ -77,15 +71,9 @@ export class LoginRegisterFormComponent implements AfterViewInit {
 
   private signin(): void {
     this.auth.signin(this.form.value).subscribe({
-      next: (result: UserDataWithToken) => {
+      next: (_: UserData) => {
         this.registrationResult = '';
         this.resultMessage = '';
-        // redirect;
-
-        this.store.dispatch(login({ data: result }));
-
-        this.router.navigate(['/user']);
-        console.log('redirect', result);
       },
       error: (err: BackendError) => {
         this.registrationResult = err.error.status;

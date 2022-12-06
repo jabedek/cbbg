@@ -14,5 +14,9 @@ export const UserModel = mongoose.model(
       type: String,
       default: undefined,
     },
+    accessToken: {
+      type: String,
+      default: undefined,
+    },
   })
 );
