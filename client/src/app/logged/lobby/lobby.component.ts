@@ -9,4 +9,12 @@ import { Game } from '../../../../../system-shared/models/specific-events.model'
 export class LobbyComponent {
   @Input() games: Game[] = [];
   @Output() createRoom = new EventEmitter<string>();
+  popoverVisible = false;
+  selectedGame: Game | undefined;
+
+  joinRoom(game: Game) {
+    console.log(game);
+    this.selectedGame = game;
+    this.popoverVisible = true;
+  }
 }

@@ -10,7 +10,7 @@
 
     <div class="games">
       <ul class="games__list">
-        <li *ngFor="let game of games">
+        <li *ngFor="let game of games" (click)="joinRoom(game)">
           <div>{{ game.name }}</div>
         </li>
       </ul>
@@ -46,3 +46,9 @@
     </div>
   </div>
 </div>
+<app-popover *ngIf="popoverVisible">
+  <div class="join-room">
+    chuj
+    {{ selectedGame?.gameId }}
+  </div>
+</app-popover>

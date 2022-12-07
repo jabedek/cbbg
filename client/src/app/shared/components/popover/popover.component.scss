@@ -1,0 +1,29 @@
+:host {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.main {
+  position: relative;
+  padding: 20px;
+  display: flex;
+  width: 500px;
+  min-height: 300px;
+  max-height: 700px;
+  border-radius: 4px;
+  box-shadow: 1px 1px 3px rgb(0 0 0 / 75%);
+  backdrop-filter: blur(7px) brightness(1.5);
+
+  > * {
+    width: 100%;
+  }
+}
