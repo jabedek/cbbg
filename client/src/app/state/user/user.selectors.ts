@@ -9,6 +9,11 @@ export const selectUserId = createSelector(
   (state: UserState) => state.data?._id
 );
 
+export const selectUserName = createSelector(
+  selectUser,
+  (state: UserState) => state.data?.username
+);
+
 export const selectLoggedIn = createSelector(
   selectUser,
   (state: UserState) => state.loggedIn

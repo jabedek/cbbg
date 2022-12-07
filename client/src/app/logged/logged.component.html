@@ -1,0 +1,18 @@
+<ng-container *ngIf="user$ | async as user">
+  <div class="user">
+    zalogowano:
+    <div>{{ user.data?.username }}</div>
+  </div>
+
+  <app-lobby
+    *ngIf="!activeGame"
+    (createRoom)="createRoom($event)"
+    [games]="(games$ | async) || []"
+  ></app-lobby>
+
+  <app-game
+    *ngIf="activeGame"
+    [activeGame]="activeGame"
+    [user]="user"
+  ></app-game>
+</ng-container>

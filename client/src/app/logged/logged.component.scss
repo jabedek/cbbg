@@ -1,0 +1,21 @@
+.user {
+  border-radius: 8px;
+  box-shadow: 0.5px 0.5px 3px rgb(0 0 0 / 50%);
+  width: 100%;
+  margin-bottom: 20px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 4px 11px;
+  height: 36px;
+  font-size: 0.78rem;
+  white-space: pre;
+  div {
+    display: flex;
+    align-items: center;
+    font-family: Roboto;
+    font-size: 0.78rem;
+    font-weight: 500;
+    height: 36px;
+  }
+}

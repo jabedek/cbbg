@@ -27,6 +27,7 @@ export class SocketHandlerService {
 
     this.ioInstance.on(IOEvent.connection, (socket: Socket): void => {
       this.coupleSocketListenersToUser(socket);
+      SocketEmitterService.sendActiveGames();
     });
   }
 
@@ -88,7 +89,6 @@ export class SocketHandlerService {
         });
       }
     }
-    // SocketEmitterService.sendActiveGames();
 
     logger.info(
       `Client socket [${socket.id}] has connected for user with id [${userId}].`,

@@ -36,7 +36,6 @@
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-
   height: 44px;
   border-radius: 4px;
   margin-top: 15px;
@@ -45,28 +44,18 @@
   width: fit-content;
   cursor: pointer;
   text-transform: uppercase;
-  font-weight: 500;
   font-size: 14px;
-  background: rgba(200, 200, 220, 1);
   color: rgba(95, 95, 149, 1);
-
-  &[disabled] {
-    background: lightgray;
-    color: darkgray;
-
-    &:hover,
-    &:active {
-      background: lightgray;
-    }
-  }
+  background: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
 
   &:hover {
     transition: background 0.2s ease;
-    background: rgba(220, 220, 240, 1);
+    background: rgba(255, 255, 255, 0.8);
   }
 
   &:active {
     transition: background 0.4s ease;
-    background: rgba(180, 180, 200, 1);
+    background: rgba(255, 255, 255, 0.8);
   }
 }

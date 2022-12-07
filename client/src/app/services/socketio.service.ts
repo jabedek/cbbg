@@ -69,7 +69,6 @@ export class SocketioService implements OnDestroy {
         this.emitter.emit<Game>(this.socket, M.user_create_game, game);
       } else {
         subscriber.error(new Error('No socket.'));
-        subscriber.complete();
       }
     });
   }

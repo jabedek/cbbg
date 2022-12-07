@@ -7,23 +7,10 @@
   </div>
   <div class="card">
     <h3 class="card__heading">Lobby</h3>
-    <!-- <div>
 
-      <input
-      #usernameInput
-      formControlName="username"
-      class="card__input"
-      type="text"
-      minlength="4"
-      maxlength="10"
-      />
-      <button class="card__button" type="submit" [disabled]="false">
-        Akcja3
-      </button>
-    </div> -->
     <div class="games">
       <ul class="games__list">
-        <li *ngFor="let game of games$ | async">
+        <li *ngFor="let game of games">
           <div>{{ game.name }}</div>
         </li>
       </ul>
@@ -33,9 +20,6 @@
       </button>
     </div>
     <div class="create">
-      <!-- <button>Znajdź grę</button>
-      <button>Gracze online</button> -->
-      <!-- <div> -->
       <div class="notch">
         <div class="side side--left"></div>
         <div class="heading">Tworzenie pokoju</div>
@@ -55,18 +39,10 @@
         class="create__button"
         type="submit"
         [disabled]="false"
-        (click)="createRoom(gameName.value)"
+        (click)="createRoom.emit(gameName.value)"
       >
         Załóż pokój
       </button>
     </div>
-    <!-- </div> -->
-    <!-- <div class="chat">
-      <div class="messages"></div>
-      <div class="chat__wrapper">
-        <textarea [placeholder]="'Napisz coś'"></textarea>
-      </div>
-      <button class="chat__send">Wyślij</button>
-    </div> -->
   </div>
 </div>

@@ -41,7 +41,7 @@ export class AuthService {
           if (data?.accessToken) {
             localStorage.setItem('token', data.accessToken);
             this.store.dispatch(login({ data }));
-            this.router.navigate(['/game']);
+            this.router.navigate(['/logged']);
           }
         }),
         finalize(() => {
