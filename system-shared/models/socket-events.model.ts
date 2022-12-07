@@ -1,11 +1,13 @@
 // SE = SocketEvent
 
-export enum SE_Source {
+// Source
+export enum S {
   CLIENT = "CLIENT",
   SERVER = "SERVER",
 }
 
-export enum SE_Basic {
+// Basic Message
+export enum B {
   ["connect"] = "connect",
   ["disconnect"] = "disconnect",
   ["create-room"] = "create-room",
@@ -14,7 +16,8 @@ export enum SE_Basic {
   ["leave-room"] = "leave-room",
 }
 
-export enum SE_Message {
+// Custom Message
+export enum M {
   user_create_game = "user_create_game",
   user_create_game_response = "user_create_game_response",
   user_joined_game = "user_joined_game",
@@ -26,16 +29,11 @@ export enum SE_Message {
 }
 
 export class SocketEvent<T> {
-  source: SE_Source;
-  message: SE_Message;
+  source: S;
+  message: M;
   timestamp: number;
   payload: T;
-  constructor(
-    source: SE_Source,
-    message: SE_Message,
-    timestamp: number,
-    payload: T
-  ) {
+  constructor(source: S, message: M, timestamp: number, payload: T) {
     this.source = source;
     this.message = message;
     this.timestamp = timestamp;

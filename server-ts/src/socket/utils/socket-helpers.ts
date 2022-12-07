@@ -1,21 +1,28 @@
 import { Server } from "socket.io";
 import {
-  SE_Source,
-  SE_Message,
-} from "../../../system-shared/models/socket-events.model";
-import { Game } from "../../../system-shared/models/specific-events.model";
+  Game,
+  RoomHash,
+} from "../../../../system-shared/models/specific-events.model";
 
-export function sendActiveGames(
+export function findAndParseRoomsToGameObjects(
   ioInstance: Server,
-  message?: SE_Message
-): void {
+  gameId?: RoomHash
+): Game[] {
   const rooms: Game[] = [...ioInstance.of("/").adapter.rooms]
-    .filter((room) => room[0].includes("game"))
+    .filter((room) => {
+      if (room[0].includes("game")) {
+        if (gameId && room[0] === gameId) {
+          return room;
+        } else {
+          return room;
+        }
+      }
+    })
     .map((room) => {
       const connectedSockets: any[] = [];
       room[1].forEach((e) => connectedSockets.push(e));
 
-      const [createdByUserId, _, name, nameHash] = room[0]
+      const [createdByUserId, name, nameHash] = room[0]
         .replace("game:", "")
         .split("-");
 
@@ -26,9 +33,5 @@ export function sendActiveGames(
         connectedSockets,
       } as unknown as Game;
     });
-
-  ioInstance.emit(
-    `${SE_Source.SERVER}#${message || SE_Message.send_active_games}`,
-    rooms
-  );
+  return rooms;
 }

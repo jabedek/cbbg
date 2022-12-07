@@ -10,7 +10,6 @@ import { Game } from '../../../../../../system-shared/models/specific-events.mod
 })
 export class LobbyComponent implements OnInit {
   games$: Observable<Game[]> = this.socketService.games$;
-  @Output() create = new EventEmitter<string>();
 
   constructor(public socketService: SocketioService) {}
 
@@ -20,12 +19,9 @@ export class LobbyComponent implements OnInit {
 
   ngOnDestroy() {
     this.socketService.disconnectAll();
-    console.log('destroy');
   }
 
   createRoom(name: string) {
-    console.log(name);
-
-    this.socketService.createRoom(name);
+    this.socketService.createRoom(name).subscribe((v) => console.log(v));
   }
 }

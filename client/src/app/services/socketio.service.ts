@@ -1,17 +1,13 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
-import {
-  SE_Basic,
-  SE_Source,
-  SE_Message,
-} from '../../../../system-shared/models/socket-events.model';
+import { B, S, M } from '../../../../system-shared/models/socket-events.model';
 import { CustomSocketEmitter } from '../../../../system-shared/custom-emitter';
 import { Game } from '../../../../system-shared/models/specific-events.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../state/app-state';
 import { selectUserId } from '../state/user/user.selectors';
-import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -21,7 +17,7 @@ export class SocketioService implements OnDestroy {
   private destroy = new Subject<void>();
   userId: string | undefined;
   private socket: Socket | undefined;
-  private emitter = new CustomSocketEmitter(SE_Source.CLIENT);
+  private emitter = new CustomSocketEmitter(S.CLIENT);
 
   games$ = new BehaviorSubject<Game[]>([]);
 
@@ -53,7 +49,7 @@ export class SocketioService implements OnDestroy {
     this.listenToSocketEvents(this.socket);
   }
 
-  createRoom(name: string) {
+  createRoom(name: string): Observable<Game> {
     const nameRandom = `${name}-${Math.randomInt(1000, 9999)}`;
     const game: Game = {
       createdByUserId: `user:${this.userId}`,
@@ -61,32 +57,30 @@ export class SocketioService implements OnDestroy {
       name: nameRandom,
       connectedSockets: [],
     };
-    console.log(game);
-
-    if (this.socket) {
-      this.emitter.emit<Game>(this.socket, SE_Message.user_create_game, game);
-
-      this.socket.on(
-        `${SE_Source.SERVER}#${SE_Message.user_create_game_response}`,
-        (result: string) => {
-          if (result === 'created') {
-            this.router.navigate([`/play/game`, game.gameId], { state: game });
+    return new Observable((subscriber) => {
+      if (this.socket) {
+        this.socket.on(
+          `${S.SERVER}#${M.user_create_game_response}`,
+          (result: Game) => {
+            subscriber.next(result);
+            subscriber.complete();
           }
-        }
-      );
-    }
+        );
+        this.emitter.emit<Game>(this.socket, M.user_create_game, game);
+      } else {
+        subscriber.error(new Error('No socket.'));
+        subscriber.complete();
+      }
+    });
   }
 
   private listenToSocketEvents(socket: Socket) {
-    socket.on(
-      `${SE_Source.SERVER}#${SE_Message.send_active_games}`,
-      (games: Game[]) => {
-        console.log(games);
-        this.games$.next(games);
-      }
-    );
+    socket.on(`${S.SERVER}#${M.send_active_games}`, (games: Game[]) => {
+      console.log(games);
+      this.games$.next(games);
+    });
 
-    socket.on(SE_Basic.disconnect, () => {
+    socket.on(B.disconnect, () => {
       console.log('callback');
 
       this.socket?.removeAllListeners();

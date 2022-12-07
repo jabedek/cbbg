@@ -2,7 +2,7 @@ import { Request, Response, Application } from "express";
 import { authRoutes } from "./api/routes/auth.routes";
 import { userRoutes } from "./api/routes/user.routes";
 import { initMongoConnection } from "./mongodb/driver-mongoose";
-import { setupSocketServer } from "./socket/handle-connection";
+import { SocketHandlerService } from "./socket/socket-handler.class";
 const express = require("express");
 const app: Application = express();
 const http = require("http").createServer(app);
@@ -29,7 +29,7 @@ async function setup() {
 
   authRoutes(app);
   userRoutes(app);
-  setupSocketServer(http, [frontendUrl]);
+  new SocketHandlerService(http, [frontendUrl]);
   http.listen(process.env.PORT, () => console.log("listening on *:3000"));
 }
 
