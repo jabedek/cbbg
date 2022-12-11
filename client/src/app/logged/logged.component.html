@@ -1,27 +1,29 @@
-<ng-container *ngIf="authUser$ | async as user">
-  <div class="data">
-    <div>
-      zalogowano:
-      <span>{{ user.data?.username }}</span>
+<app-auth-layout *ngIf="!activeGame">
+  <ng-container *ngIf="authUser$ | async as user">
+    <div class="data">
+      <div>
+        zalogowano:
+        <span>{{ user.data?.username }}</span>
+      </div>
+
+      <div *ngIf="users$ | async as users">
+        total players:
+        <span> {{ users.length }}</span>
+      </div>
     </div>
 
-    <div *ngIf="users$ | async as users">
-      total players:
-      <span> {{ users.length }}</span>
-    </div>
-  </div>
+    <app-lobby
+      *ngIf="!activeGame"
+      (createGame)="createGame($event)"
+      (joinGame)="joinGame($event)"
+      [games]="(games$ | async) || []"
+    ></app-lobby>
+  </ng-container>
+</app-auth-layout>
 
-  <app-lobby
-    *ngIf="!activeGame"
-    (createGame)="createGame($event)"
-    (joinGame)="joinGame($event)"
-    [games]="(games$ | async) || []"
-  ></app-lobby>
-
-  <app-game
-    *ngIf="activeGame"
-    [activeGame]="activeGame"
-    [authUser]="(authUser$ | async) || undefined"
-    [users]="(users$ | async) || []"
-  ></app-game>
-</ng-container>
+<app-game
+  *ngIf="activeGame"
+  [activeGame]="activeGame"
+  [authUser]="(authUser$ | async) || undefined"
+  [users]="(users$ | async) || []"
+></app-game>

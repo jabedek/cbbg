@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthLayoutComponent } from '../layout/auth-layout/auth-layout.component';
 import { LoggedComponent } from './logged.component';
 
 const routes: Routes = [
@@ -9,7 +8,6 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: AuthLayoutComponent,
 
         children: [
           { path: '', pathMatch: 'full', component: LoggedComponent },

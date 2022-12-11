@@ -6,6 +6,7 @@ import { LoggedComponent } from './logged.component';
 import { LoggedRoutingModule } from './logged-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { LayoutModule } from '../layout/layout.module';
 
 @NgModule({
   declarations: [GameComponent, LobbyComponent, LoggedComponent],
@@ -15,6 +16,7 @@ import { SharedModule } from '../shared/shared.module';
     ReactiveFormsModule,
     LoggedRoutingModule,
     SharedModule,
+    LayoutModule,
   ],
   exports: [GameComponent, LobbyComponent],
 })
