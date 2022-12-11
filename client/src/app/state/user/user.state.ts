@@ -1,10 +1,10 @@
 import {
   UserData,
-  UserSocketSessionData,
+  UserSocketSessionDataWithSocket,
 } from '../../../../../system-shared/models/user.model';
 
 export interface UserState {
   loggedIn: boolean;
   data: UserData | undefined;
-  currentSocketSession: UserSocketSessionData | undefined;
+  currentSocketSession: UserSocketSessionDataWithSocket | undefined;
 }

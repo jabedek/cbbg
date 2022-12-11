@@ -10,7 +10,7 @@
 
     <div class="games">
       <ul class="games__list">
-        <li *ngFor="let game of games" (click)="joinRoom(game)">
+        <li *ngFor="let game of games" (click)="popupJoinGame(game)">
           <div>{{ game.name }}</div>
         </li>
       </ul>
@@ -39,7 +39,7 @@
         class="create__button"
         type="submit"
         [disabled]="false"
-        (click)="createRoom.emit(gameName.value)"
+        (click)="createGame.emit(gameName.value)"
       >
         Załóż pokój
       </button>
@@ -48,7 +48,26 @@
 </div>
 <app-popover *ngIf="popoverVisible">
   <div class="join-room">
-    chuj
-    {{ selectedGame?.gameId }}
+    <p>Chcesz dołączyć do {{ selectedGame?.name }}</p>
+
+    <div>
+      <button
+        class="join-room__join"
+        type="submit"
+        [disabled]="false"
+        (click)="join()"
+      >
+        Dołącz
+      </button>
+
+      <button
+        class="join-room__cancel"
+        type="submit"
+        [disabled]="false"
+        (click)="popoverVisible = false"
+      >
+        Anuluj
+      </button>
+    </div>
   </div>
 </app-popover>

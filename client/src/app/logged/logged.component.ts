@@ -2,9 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Game } from '../../../../system-shared/models/specific-events.model';
+import {
+  UsersDataMap,
+  UserSocketSessionDataWithSocket,
+  UserSocketSessionDataWithSocketID,
+} from '../../../../system-shared/models/user.model';
 import { SocketioService } from '../services/socketio.service';
 import { AppState } from '../state/app-state';
 import { selectUser } from '../state/user/user.selectors';
+import { UserState } from '../state/user/user.state';
 
 @Component({
   selector: 'app-logged',
@@ -13,7 +19,9 @@ import { selectUser } from '../state/user/user.selectors';
 })
 export class LoggedComponent implements OnInit {
   games$: Observable<Game[]> = this.socketService.games$;
-  user$ = this.store.select(selectUser);
+  users$: Observable<Readonly<UserSocketSessionDataWithSocketID[]>> =
+    this.socketService.users$;
+  authUser$: Observable<UserState | undefined> = this.store.select(selectUser);
   activeGame: Game | undefined;
 
   constructor(
@@ -29,7 +37,11 @@ export class LoggedComponent implements OnInit {
     this.socketService.disconnectAll();
   }
 
-  createRoom(name: string) {
-    this.socketService.createRoom(name).subscribe((v) => (this.activeGame = v));
+  createGame(name: string) {
+    this.socketService.createGame(name).subscribe((v) => (this.activeGame = v));
+  }
+
+  joinGame(game: Game) {
+    this.socketService.joinGame(game).subscribe((v) => (this.activeGame = v));
   }
 }

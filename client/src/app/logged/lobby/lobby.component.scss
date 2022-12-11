@@ -6,7 +6,7 @@ div.wrapper {
   border-radius: 8px;
   box-shadow: 0.5px 0.5px 3px rgba(0, 0, 0, 0.5);
   width: fit-content;
-  overflow: hidden;
+  overflow-x: hidden;
 
   &.login {
     .hint,
@@ -410,5 +410,77 @@ button {
   .side {
     height: 22px;
     width: 22px;
+  }
+}
+
+.join-room {
+  &__join {
+    height: 44px;
+    border-radius: 4px;
+    margin-top: 15px;
+    border: 1px solid transparent;
+    min-width: 150px;
+    width: fit-content;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 14px;
+    background: rgba(200, 200, 220, 1);
+    color: rgba(95, 95, 149, 1);
+
+    &[disabled] {
+      background: lightgray;
+      color: darkgray;
+
+      &:hover,
+      &:active {
+        background: lightgray;
+      }
+    }
+
+    &:hover {
+      transition: background 0.2s ease;
+      background: rgba(220, 220, 240, 1);
+    }
+
+    &:active {
+      transition: background 0.4s ease;
+      background: rgba(180, 180, 200, 1);
+    }
+  }
+
+  &__cancel {
+    height: 44px;
+    border-radius: 4px;
+    margin-top: 15px;
+    border: 1px solid transparent;
+    min-width: 150px;
+    width: fit-content;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 14px;
+    background: rgba(200, 200, 220, 1);
+    color: rgba(95, 95, 149, 1);
+
+    &[disabled] {
+      background: lightgray;
+      color: darkgray;
+
+      &:hover,
+      &:active {
+        background: lightgray;
+      }
+    }
+
+    &:hover {
+      transition: background 0.2s ease;
+      background: rgba(220, 220, 240, 1);
+    }
+
+    &:active {
+      transition: background 0.4s ease;
+      background: rgba(180, 180, 200, 1);
+    }
   }
 }

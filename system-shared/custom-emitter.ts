@@ -4,12 +4,14 @@ import { Socket as ClientSocket } from "../client/node_modules/socket.io-client"
 
 export class CustomSocketEmitter {
   readonly source: S;
-  constructor(source: S) {
+  readonly socket: ServerSocket | ClientSocket;
+  constructor(source: S, socket: ServerSocket | ClientSocket) {
     this.source = source;
+    this.socket = socket;
   }
 
-  emit<T = void>(socket: ServerSocket | ClientSocket, message: M, payload: T) {
-    socket.emit(
+  emit<T = void>(message: M, payload: T) {
+    this.socket.emit(
       `${this.source}#${message}`,
       new SocketEvent<T>(this.source, message, Date.now(), payload)
     );

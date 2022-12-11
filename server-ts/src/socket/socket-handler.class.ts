@@ -3,7 +3,7 @@ import { Server, Socket } from "socket.io";
 import { IdGenerator } from "../../../system-shared/helpers/id-gen";
 import { IOEvent } from "../../../system-shared/models/io-events.model";
 import { B } from "../../../system-shared/models/socket-events.model";
-import { UserSocketSessionData } from "../../../system-shared/models/user.model";
+import { UserSocketSessionDataWithSocket } from "../../../system-shared/models/user.model";
 import { SocketEmitterService } from "./services/socket-emitter.service";
 import { SocketListenerService } from "./services/socket-listener.service";
 
@@ -17,7 +17,7 @@ export type IOInstanceData = {
 export class SocketHandlerService {
   private ioInstanceData: IOInstanceData | undefined;
   private ioInstance: Server | undefined;
-  private usersData = new Map<string, UserSocketSessionData>();
+  private usersData = new Map<string, UserSocketSessionDataWithSocket>();
 
   constructor(http: any, origin: string[]) {
     this.ioInstanceData = this.prepareIOInstance(http, origin);
@@ -47,11 +47,11 @@ export class SocketHandlerService {
   }
 
   private coupleSocketListenersToUser(socket: Socket) {
-    const socketUserData: UserSocketSessionData = {
+    const socketUserData: UserSocketSessionDataWithSocket = {
       createdGames: [],
       userId: socket.handshake.query.userId as unknown as string,
       currentSocket: socket,
-      atRoom: undefined,
+      atGameId: undefined,
     };
 
     const userId = socketUserData.userId;

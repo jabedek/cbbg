@@ -17,7 +17,7 @@ const signup = (req: Request, res: Response) => {
     password: bcrypt.hashSync((req?.body as any)?.password, 8),
     gainedPoints: req.body?.gainedPoints || 0,
     joinedAt: Date.now(),
-    currentConnection: { userId: "", atRoom: "" },
+    currentConnection: { userId: "", atGameId: "" },
     accessToken: undefined,
   });
 

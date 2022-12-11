@@ -1,12 +1,13 @@
 import { Server } from "socket.io";
 import {
   Game,
-  RoomHash,
+  GameHash,
 } from "../../../../system-shared/models/specific-events.model";
+import { UsersDataMap } from "../../../../system-shared/models/user.model";
 
 export function findAndParseRoomsToGameObjects(
   ioInstance: Server,
-  gameId?: RoomHash
+  gameId?: GameHash
 ): Game[] {
   const rooms: Game[] = [...ioInstance.of("/").adapter.rooms]
     .filter((room) => {
@@ -34,4 +35,10 @@ export function findAndParseRoomsToGameObjects(
       } as unknown as Game;
     });
   return rooms;
+}
+
+/** Disconnect and delete user's data and socket.  */
+export function decoupleUser(userId: string, usersData: UsersDataMap) {
+  usersData.get(userId)?.currentSocket?.removeAllListeners().disconnect();
+  usersData.delete(userId);
 }

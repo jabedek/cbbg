@@ -11,7 +11,7 @@ import {
   SocketEvent,
 } from "../../../../system-shared/models/socket-events.model";
 import { Game } from "../../../../system-shared/models/specific-events.model";
-import { UserSocketSessionData } from "../../../../system-shared/models/user.model";
+import { UserSocketSessionDataWithSocket } from "../../../../system-shared/models/user.model";
 import { findAndParseRoomsToGameObjects } from "../utils/socket-helpers";
 import { SocketEmitterService } from "./socket-emitter.service";
 
@@ -74,7 +74,7 @@ export class SocketListenerService {
 
   static listenToCreateGame(
     socket: Socket,
-    usersData: Map<string, UserSocketSessionData>
+    usersData: Map<string, UserSocketSessionDataWithSocket>
   ): void {
     console.log("listenToCreateGame");
 

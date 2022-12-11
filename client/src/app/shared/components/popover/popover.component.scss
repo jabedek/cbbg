@@ -14,6 +14,7 @@
 
 div.main {
   position: relative;
+  justify-content: center;
   padding: 20px;
   display: flex;
   width: 500px;
@@ -21,7 +22,7 @@ div.main {
   max-height: 700px;
   border-radius: 4px;
   box-shadow: 1px 1px 3px rgb(0 0 0 / 75%);
-  backdrop-filter: blur(7px) brightness(1.5);
+  backdrop-filter: blur(20px) brightness(1.4);
 
   > * {
     width: 100%;

@@ -8,13 +8,21 @@ import { Game } from '../../../../../system-shared/models/specific-events.model'
 })
 export class LobbyComponent {
   @Input() games: Game[] = [];
-  @Output() createRoom = new EventEmitter<string>();
+  @Output() createGame = new EventEmitter<string>();
+  @Output() joinGame = new EventEmitter<Game>();
   popoverVisible = false;
   selectedGame: Game | undefined;
 
-  joinRoom(game: Game) {
-    console.log(game);
+  popupJoinGame(game: Game) {
     this.selectedGame = game;
     this.popoverVisible = true;
+  }
+
+  join() {
+    if (this.selectedGame) {
+      this.joinGame.emit(this.selectedGame);
+      this.popoverVisible = false;
+      this.selectedGame = undefined;
+    }
   }
 }
