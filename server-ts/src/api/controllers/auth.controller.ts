@@ -75,7 +75,6 @@ const signin = (req: Request, res: Response) => {
           accessToken: token,
           gainedPoints: user.gainedPoints,
           joinedAt: user.joinedAt,
-          userId: user.userId,
         };
 
         User.findByIdAndUpdate(
@@ -132,8 +131,41 @@ const signout = (req: Request, res: Response) => {
   });
 };
 
+const userData = (req: Request, res: Response) => {
+  User.findOne({
+    _id: req.params.id,
+  }).exec((err: any, data: unknown) => {
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
+    if (!data) {
+      return res.status(404).send({ message: "Nie znaleziono użytkownika." });
+    }
+    const user = data as UserData;
+    res.status(200).send(user);
+    // if (user) {
+    //   User.findByIdAndUpdate(
+    //     user._id,
+    //     { accessToken: "" },
+    //     (err: any, freshData: unknown) => {
+    //       console.log(freshData);
+
+    //       if (err) {
+    //         res.status(500).send({ message: err });
+    //         return;
+    //       } else {
+    //         res.status(200).send(freshData);
+    //       }
+    //     }
+    //   );
+    // }
+  });
+};
+
 export const authController = {
   signup,
   signin,
   signout,
+  userData,
 };

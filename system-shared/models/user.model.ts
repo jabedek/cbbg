@@ -9,7 +9,6 @@ export interface UserData {
   password?: string;
   gainedPoints: number;
   joinedAt: string | number; // timestamp
-  userId?: string;
   accessToken?: string;
 }
 

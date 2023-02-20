@@ -13,8 +13,24 @@ export class GameComponent implements OnInit {
   @Input() authUser: UserState | undefined;
   @Input() users: Readonly<UserSocketSessionDataWithSocketID[]> = [];
 
+  currentCard = 1;
+  animationCard = '';
+
   ngOnInit() {
     console.log(this.activeGame);
     console.log(this.authUser);
+  }
+
+  submit() {
+    setTimeout(() => {
+      this.animationCard = 'card-outcoming';
+      setTimeout(() => {
+        this.currentCard++;
+        this.animationCard = 'card-incoming';
+        setTimeout(() => {
+          this.animationCard = '';
+        }, 600);
+      }, 600);
+    }, 0);
   }
 }

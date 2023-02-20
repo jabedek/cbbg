@@ -10,10 +10,6 @@ export const UserModel = mongoose.model(
     password: String,
     gainedPoints: Number,
     joinedAt: String,
-    userId: {
-      type: String,
-      default: undefined,
-    },
     accessToken: {
       type: String,
       default: undefined,

@@ -31,7 +31,6 @@ import { LoggedModule } from './logged/logged.module';
     AuthModule,
     LayoutModule,
     SharedModule,
-    LoggedModule,
     StoreModule.forRoot({ user: userReducer }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,

@@ -1,4 +1,14 @@
-<div class="wrapper">
-  <div class="card test-outcoming">card mine</div>
-  <div class="card test-incoming">card someones</div>
+<div class="main-wrapper">
+  <div class="card-wrapper">
+    <div class="card {{ animationCard }}">
+      <div class="card__header">
+        <div class="left">
+          <span>###</span>
+          <span></span>
+        </div>
+        <div class="right">{{ currentCard }}</div>
+      </div>
+    </div>
+  </div>
+  <button class="submit" (click)="submit()">Submit</button>
 </div>

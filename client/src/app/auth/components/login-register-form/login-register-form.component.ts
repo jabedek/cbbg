@@ -44,7 +44,11 @@ export class LoginRegisterFormComponent implements AfterViewInit {
     public fb: FormBuilder,
     private auth: AuthService,
     private router: Router
-  ) {}
+  ) {
+    setTimeout(() => {
+      this.auth.checkIfLoggedInLocalStorage();
+    }, 0);
+  }
 
   ngAfterViewInit(): void {
     this.usernameInput?.nativeElement.focus();

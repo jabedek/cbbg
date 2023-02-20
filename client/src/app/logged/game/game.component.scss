@@ -15,49 +15,68 @@ $card-width: 450px;
   justify-content: center;
 }
 
-.wrapper {
-  width: $card-width;
-  background: green;
+.main-wrapper {
+  width: 100vw;
+  height: 100vh;
   display: flex;
   align-items: center;
   align-content: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.card-wrapper {
+  width: $card-width;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  height: 600px;
 }
 
 .card {
   min-width: $card-width;
   width: $card-width;
   height: 300px;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid black;
+  background: white;
   position: absolute;
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0.65px 0.65px 3px rgba(0, 0, 0, 0.5);
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
-.test-outcoming {
-  animation: 0.3s 0.3s forwards test-outcoming ease-in-out;
+.card-outcoming {
+  animation: 0.3s 0.3s forwards card-outcoming ease-in-out;
 }
 
-.test-incoming {
-  animation: 0.9s 0.3s backwards test-incoming ease-in-out;
+.card-incoming {
+  animation: 0.3s 0.3s backwards card-incoming ease-in-out;
 }
 
-@keyframes test-outcoming {
+@keyframes card-outcoming {
   0% {
     transform: rotate3d(0, 0, 0, 0) skew(0, 0) translate3d(0, 0, 0);
     opacity: 1;
   }
 
   70% {
-    opacity: 0.7;
+    opacity: 0.5;
   }
 
   100% {
-    transform: rotate3d(1.5, 3, -1, -65deg) skew(5deg, 10deg)
-      translate3d(-700px, 100px, 100px);
+    transform: rotate3d(0.9, 1.54, -1.03, -92deg) skew(9deg, -30deg)
+      translate3d(-700px, 200px, 200px) scale(1.1);
+
     opacity: 0;
   }
 }
 
-@keyframes test-incoming {
+@keyframes card-incoming {
   0% {
     transform: rotate3d(-1.5, 3, 1, -65deg) skew(-5deg, -10deg)
       translate3d(700px, 100px, -100px);
@@ -65,11 +84,16 @@ $card-width: 450px;
   }
 
   70% {
-    opacity: 0.3;
+    opacity: 0.5;
   }
 
   100% {
     transform: rotate3d(0, 0, 0, 0) skew(0, 0) translate3d(0, 0, 0);
     opacity: 1;
   }
+}
+
+.submit {
+  height: 60px;
+  width: 100px;
 }

@@ -2,11 +2,17 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { finalize, Observable, Subject, tap } from 'rxjs';
+import { finalize, first, Observable, Subject, tap } from 'rxjs';
 import { BackendMessage } from '../../../../system-shared/models/backend-message';
 import { UserData } from '../../../../system-shared/models/user.model';
+import { getItemExpireDate } from '../shared/utils';
 import { AppState } from '../state/app-state';
 import { login, logout } from '../state/user/user.actions';
+
+interface LocalStorageAuthItem {
+  userId: string;
+  storageItemExpiresAt: Date;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -38,8 +44,15 @@ export class AuthService {
       .pipe(
         tap((data) => {
           this.currentUser = data;
-          if (data?.accessToken) {
-            localStorage.setItem('token', data.accessToken);
+          if (data?._id && data?.accessToken) {
+            const userId = data._id.toString();
+            const item: LocalStorageAuthItem = {
+              userId,
+              storageItemExpiresAt: getItemExpireDate(),
+            };
+            localStorage.setItem('auth', JSON.stringify(item));
+            console.log('logout', userId, JSON.stringify(item));
+
             this.store.dispatch(login({ data }));
             this.router.navigate(['/logged']);
           }
@@ -58,7 +71,10 @@ export class AuthService {
       })
       .pipe(
         tap((v) => {
-          localStorage.setItem('token', '');
+          const userId = this.currentUser?._id;
+          console.log('logout', userId);
+
+          localStorage.removeItem('auth');
           this.store.dispatch(logout());
         }),
         finalize(() => {
@@ -66,5 +82,30 @@ export class AuthService {
           this.router.navigate(['/']);
         })
       );
+  }
+
+  private getUserData(userId: string): Observable<UserData> {
+    return this.http.get<UserData>(`http://localhost:4200/api/auth/${userId}`);
+  }
+
+  checkIfLoggedInLocalStorage() {
+    const storageItem: string = `${localStorage.getItem('auth')}`;
+
+    if (storageItem) {
+      const parsedItem: LocalStorageAuthItem = JSON.parse(storageItem);
+      const expiresAt = new Date(parsedItem.storageItemExpiresAt);
+
+      if (expiresAt.getTime() > new Date().getTime()) {
+        this.getUserData(parsedItem.userId)
+          .pipe(first())
+          .subscribe((data) => {
+            this.store.dispatch(login({ data }));
+            this.router.navigate(['/logged']);
+          });
+        console.log('here');
+      } else {
+        localStorage.removeItem('auth');
+      }
+    }
   }
 }
